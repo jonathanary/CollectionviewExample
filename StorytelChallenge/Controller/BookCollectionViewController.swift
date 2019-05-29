@@ -35,7 +35,7 @@ class BookCollectionViewController: UICollectionViewController, UICollectionView
         inFetchingMode = true
         let urlString = "https://api.storytel.net/search?query=\(query)&page=\(page)"
         
-        DispatchQueue.global().async {
+        DispatchQueue.global(qos: .utility).async {
             
             if let url = URL(string: urlString) {
                 
@@ -53,20 +53,22 @@ class BookCollectionViewController: UICollectionViewController, UICollectionView
         let decoder = JSONDecoder()
         let booksLoaded = try! decoder.decode(StoryTelDatabase.self, from: json)
         
-        DispatchQueue.main.async { [weak self] in
-            self!.nextPage = booksLoaded.nextPage ?? "0"
+        DispatchQueue.main.async { [unowned self] in
+            self.nextPage = booksLoaded.nextPage ?? "0"
             
             if let items = booksLoaded.items {
                 
                 for item in items {
-                    self!.books.append(item)
+                    self.books.append(item)
+                    assert(self.books.count > 0)
                 }
-                let pagesNr = (self?.books.count)!-1
-                self!.setupImageTasks(withNumberOfImages: pagesNr)
-                self?.collectionView.reloadData()
-                self?.collectionView.setNeedsLayout()
-                self?.collectionView.layoutIfNeeded()                
-                self?.inFetchingMode = false
+                let pagesNr = (self.books.count)-1
+                self.setupImageTasks(withNumberOfImages: pagesNr)
+                
+                self.collectionView.setNeedsLayout()
+                self.collectionView.reloadData()
+                self.collectionView.layoutIfNeeded()
+                self.inFetchingMode = false
             }
         }
     }
@@ -85,6 +87,3 @@ class BookCollectionViewController: UICollectionViewController, UICollectionView
         self.collectionView?.reloadItems(at: [IndexPath(row: position, section: 0)])
     }
 }
-
-
-

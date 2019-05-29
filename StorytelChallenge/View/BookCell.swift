@@ -17,7 +17,6 @@ class BookCell: UICollectionViewCell {
     let activityIndicator: UIActivityIndicatorView = {
         let ai = UIActivityIndicatorView(style: .gray)
         ai.color = .lightGray
-        ai.translatesAutoresizingMaskIntoConstraints = false
         return ai
     }()
     
@@ -33,7 +32,6 @@ class BookCell: UICollectionViewCell {
         label.numberOfLines = 1
         label.font = UIFont.boldSystemFont(ofSize: 18)
         label.textColor = UIColor.black
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -43,7 +41,6 @@ class BookCell: UICollectionViewCell {
         label.font = UIFont.systemFont(ofSize: 14)
         label.text = "By: "
         label.textColor = UIColor.darkGray
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -53,7 +50,6 @@ class BookCell: UICollectionViewCell {
         label.font = UIFont.systemFont(ofSize: 14)
         label.text = ""
         label.textColor = UIColor.lightGray
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -74,33 +70,20 @@ class BookCell: UICollectionViewCell {
     
     fileprivate func setupView() {
         
-        contentView.addSubview(imageView)
-        contentView.addSubview(activityIndicator)
-        activityIndicator.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
-        activityIndicator.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
+        [imageView, activityIndicator, titleLabel, authorsLabel, narratorsLabel].forEach { self.addSubview($0) }
         
-        contentView.addSubview(titleLabel)
+        activityIndicator.centerInView(view: imageView)
+        titleLabel.anchor(top: self.topAnchor, leading: imageView.trailingAnchor, bottom: nil, trailing: self.trailingAnchor, padding: .init(top: 8, left: 8, bottom: 0, right: -24))
+        authorsLabel.anchor(top: titleLabel.bottomAnchor, leading: imageView.trailingAnchor, bottom: nil, trailing: self.trailingAnchor, padding: .init(top: 8, left: 8, bottom: 0, right: -24))
+        narratorsLabel.anchor(top: authorsLabel.bottomAnchor, leading: imageView.trailingAnchor, bottom: nil, trailing: self.trailingAnchor, padding: .init(top: 8, left: 8, bottom: 0, right: -24))
         
-        titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
-        titleLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 8).isActive = true
-        titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -24).isActive = true
-        
-        contentView.addSubview(authorsLabel)
-        authorsLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8).isActive = true
-        authorsLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 8).isActive = true
-        authorsLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -24).isActive = true
-        
-        contentView.addSubview(narratorsLabel)
-        narratorsLabel.topAnchor.constraint(equalTo: authorsLabel.bottomAnchor, constant: 8).isActive = true
-        narratorsLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 8).isActive = true
-        narratorsLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -24).isActive = true
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         
         titleLabel.text = ""
-        authorsLabel.text = "By: "
+        authorsLabel.text = ""
         narratorsLabel.text = ""
     }
     

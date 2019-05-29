@@ -26,6 +26,7 @@ class ImageTask {
         self.url = url
         self.session = session
         self.delegate = delegate
+        self.cache?.evictsObjectsWithDiscardedContent = false
     }
     
     func resume() {
@@ -60,7 +61,7 @@ class ImageTask {
         guard let url = url else { return }
         guard let data = FileManager.default.contents(atPath: url.path) else { return }
         
-        DispatchQueue.global(qos: .background).async { [weak self] in
+        DispatchQueue.global(qos: .utility).async { [weak self] in
             let cachedImage: UIImage? = self?.cache?.object(forKey: url.path as NSString) as? UIImage
             
             if let goodImage = cachedImage {

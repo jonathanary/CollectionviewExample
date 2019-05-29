@@ -60,7 +60,7 @@ extension BookCollectionViewController {
                 authorCounter += 1
                 
                 if authorCounter == 1 {
-                    cell.authorsLabel.text = "\(cell.authorsLabel.text!)\(author.name!)"
+                    cell.authorsLabel.text = "By: \(author.name!)"
                     
                 } else {
                     cell.authorsLabel.text = "\(cell.authorsLabel.text!), \(author.name!)"
@@ -74,7 +74,7 @@ extension BookCollectionViewController {
                 narratorCounter += 1
                 
                 if narratorCounter == 1 {
-                    cell.narratorsLabel.text = "With: \(cell.narratorsLabel.text!)\(narrator.name!)"
+                    cell.narratorsLabel.text = "With: \(narrator.name!)"
                     
                 } else if narratorCounter > 1 {
                     cell.narratorsLabel.text = "\(cell.narratorsLabel.text!), \(narrator.name!)"
